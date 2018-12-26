@@ -5,15 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
     <style type="text/css">
         body {
-            width: 850px;
+            width: 100%;
             margin: 5px auto;
+            overflow: hidden;
         }
         #page-main {
             width: 100%;
         }
         #container {
-            width: 838px;
+            width: 98%;
             height: 383px;
+            margin-left: 1%;
             border: 1px solid grey;
         }
     </style>
@@ -94,6 +96,7 @@
         <div id="container"></div>
     </div>
     <script src="/node_modules/requirejs/require.js"></script>
+    <script src="/node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
     <script>
         require.config({
             paths: {
@@ -127,13 +130,21 @@
             var diffEditor = monaco.editor.createDiffEditor(
                 container,
                 {
-                    enableSplitViewResizing: true
+                    enableSplitViewResizing: true,
+                    glyphMargin: true,
+                    contextmenu: false
                 }
             );
             window.diffEditor = diffEditor;
             diffEditor.setModel({
                 original: monaco.editor.createModel('原源代码', 'text/plain'),
                 modified: monaco.editor.createModel('改后代码', 'text/plain'),
+            });
+
+            diffEditor.updateOptions({
+                "autoIndent": true,
+                "formatOnPaste": true,
+                "formatOnType": true
             });
 
             diffEditor.originalEditor.updateOptions({
@@ -164,8 +175,8 @@
 
             $(window).resize(function() {
                 var new_height = $(window).height() - $('#container').offset().top - 10;
-                if(new_height < 50) {
-                    new_height = 50;
+                if(new_height < 10) {
+                    new_height = 10;
                 }
                 $('#container').css('height', new_height);
                 if(diffEditor) {
@@ -174,6 +185,14 @@
             });
 
             $(window).trigger('resize');
+
+            setInterval(function() {
+                if(diffEditor.getOriginalEditor().getConfiguration().readOnly) {
+                    diffEditor.originalEditor.updateOptions({
+                        readOnly: false
+                    });
+                };
+            }, 500);
         });
     </script>
 </body>
