@@ -1,5 +1,8 @@
 # online code diff viewer
 
+## online demo
+- http://diff.wx.gsw945.com/diff
+
 ## setup
 * npm package install
     ```
