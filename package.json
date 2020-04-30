@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "jquery": "^1.12.4",
+    "jquery": "^3.5.0",
     "monaco-editor": "^0.15.6",
     "requirejs": "^2.3.6"
   }
